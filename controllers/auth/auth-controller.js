@@ -99,22 +99,28 @@ const logoutUser = (req, res) => {
 //auth middleware
 const authMiddleware = async (req, res, next) => {
   const token = req.cookies.token;
-  if (!token)
+  console.log("Token received:", token);
+  console.log("JWT Secret Key:", process.env.JWT_SECRET);
+  
+  if (!token) {
     return res.status(401).json({
       success: false,
-      message: "Unauthorised user!",
+      message: "Unauthorised user! Token missing.",
     });
-
+  }
+  
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {
+    console.error("JWT Verification Error:", error.message);
     res.status(401).json({
       success: false,
-      message: "Unauthorised user!",
+      message: "Unauthorised user! Invalid or expired token.",
     });
   }
+  
 };
 
 module.exports = { registerUser, loginUser, logoutUser, authMiddleware };
