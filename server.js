@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -24,12 +25,14 @@ mongoose
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // Frontend URL
-      "https://www.sandbox.paypal.com", // PayPal sandbox URL
-      "https://sandbox.paypal.com", // PayPal sandbox URL (ensure both variations work)
+      "http://localhost:5173", 
+      process.env.FRONTEND_URL,                         // Frontend URL
+      "https://www.sandbox.paypal.com",                 // PayPal sandbox URL
+      "https://sandbox.paypal.com",                      // PayPal sandbox URL (ensure both variations work)
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
